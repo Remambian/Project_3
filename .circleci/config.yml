@@ -29,6 +29,6 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
 workflows:
-  say-hello-workflow:
+  build-workflow:
     jobs:
       - build-frontend
