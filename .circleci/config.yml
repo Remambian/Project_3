@@ -100,11 +100,11 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - when: on_fail
-        run:
-          name: Notify Slack
-          command: |
-              curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}"    
+      run:
+        name: Notify Slack
+        command: |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}"    
+      when: on_fail
 
 workflows:
   build-workflow:
