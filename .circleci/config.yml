@@ -4,18 +4,7 @@ orbs:
   slack: circleci/slack@4.12.5
 
 jobs:
-  notify-slack:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run:
-          name: Notify Slack
-          command: |
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}" 
-   
-        
-
-
+  
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -106,6 +95,16 @@ jobs:
             npm install
             npm audit --audit-level=critical --force
             npm audit fix --audit-level=critical
+  
+  notify-slack:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - when: on_fail
+      - run:
+          name: Notify Slack
+          command: |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}"    
 
 workflows:
   build-workflow:
@@ -121,4 +120,10 @@ workflows:
       - scan-backend:
           requires : [build-backend]
       - notify-slack:
-        - when: on_fail    
+          requires :
+            - build-frontend
+            - build-backend
+            - test-frontend
+            - test-backend
+            - scan-frontend
+            - scan-backend
