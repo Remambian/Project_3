@@ -12,11 +12,7 @@ jobs:
           name: Notify Slack
           command: |
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}" 
-      - when: on_fail
-        run:
-          name: Notify Slack
-          command: |
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}" 
+      - when: on_fail       
         
 
 
