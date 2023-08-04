@@ -117,16 +117,11 @@ workflows:
           requires : [build-frontend]
       - scan-backend:
           requires : [build-backend]
-      - notify-slack:
-          requires: 
-            - build-frontend
-            - build-backend
-            - test-frontend
-            - test-backend
-            - scan-frontend
-            - scan-backend
-    when:
-      exit 1
+
+    on_fail:
+      do:    
+        - notify-slack:
+          
 
 
 
