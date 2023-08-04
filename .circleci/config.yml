@@ -4,7 +4,7 @@ orbs:
   slack: circleci/slack@4.12.5
 
 jobs:
-   notify-slack:
+  notify-slack:
     docker:
       - image: circleci/node:13.8.0
     steps:
@@ -12,7 +12,6 @@ jobs:
           name: Notify Slack
           command: |
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "${SLACK_WEBHOOK_URL}" 
-
 
   build-frontend:
     docker:
