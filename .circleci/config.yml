@@ -103,7 +103,7 @@ jobs:
       - run: 
           name: Notify Slack
           command: echo $SLACK_WEBHOOK_URL
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Build failure notfication!"}' "$SLACK_WEBHOOK_URL"    
+            "curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' $SLACK_WEBHOOK_URL"
           # when: on_fail
 
 workflows:
