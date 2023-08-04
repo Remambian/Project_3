@@ -112,18 +112,20 @@ workflows:
       - build-frontend
       - build-backend
       - test-frontend:
-          requires : [build-frontend]
+          requires : 
+            - build-frontend
       - test-backend:
-          requires : [build-backend]
+          requires : 
+            - build-backend
       - scan-frontend:
-          requires : [build-frontend]
+          requires : 
+            - build-frontend
       - scan-backend:
-          requires : [build-backend]
+          requires : 
+            - build-backend
       - notify-slack:
           requires :
-            - [build-frontend]
-            - [build-backend]
-            - [test-frontend]
-            - [test-backend]
-            - [scan-frontend]
-            - [scan-backend]
+            - test-frontend
+            - test-backend
+            - scan-frontend
+            - scan-backend
