@@ -130,9 +130,12 @@ jobs:
       - run:
           name: Fetch the Public IP of the Instance
           command: |
-            echo aws ec2 describe-instances \
+            export PublicIP = $(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text 
+              --output text)
+            echo $PublicIP  
+
+
 workflows:  
   build-workflow:
     jobs:
