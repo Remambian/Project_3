@@ -126,6 +126,13 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --stack-name "Project3-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
+
+      - run:
+          name: Fetch the Public IP of the Instance
+          command: |
+            echo aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text 
 workflows:  
   build-workflow:
     jobs:
