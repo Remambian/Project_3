@@ -141,8 +141,7 @@ workflows:
       - scan-frontend:
           requires : [build-frontend]
       - scan-backend:
-          requires : [build-backend]
-      # - notify-slack
+          requires : [build-backend]      
       - deploy-infrastructure:
           requires:
             - test-frontend
