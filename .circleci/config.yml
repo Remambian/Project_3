@@ -130,10 +130,12 @@ jobs:
       - run:
           name: Fetch the Public IP of the Instance
           command: |
-            export PublicIP = $(aws ec2 describe-instances \
+            PublicIP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-            echo $PublicIP  
+            echo [web] > .circleci/ansinble/inventory.txt
+            echo $PublicIP > .circleci/ansinble/inventory.txt
+            cat .circleci/ansible/inventory.txt
 
 
 workflows:  
