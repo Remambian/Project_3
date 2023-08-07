@@ -133,8 +133,8 @@ jobs:
             PublicIP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-            echo [web] > .circleci/ansinble/inventory.txt
-            echo $PublicIP > .circleci/ansinble/inventory.txt
+            echo [web] > .circleci/ansible/inventory.txt
+            echo $PublicIP > .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
 
 
