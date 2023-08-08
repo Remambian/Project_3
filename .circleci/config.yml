@@ -132,6 +132,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --stack-name "Project3-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
+            aws cloudformation describe-stack-events --stack-name Project3-backend-(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)  
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -139,7 +140,7 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --stack-name "Project3-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
-
+            aws cloudformation describe-stack-events --stack-name Project3-frontend-(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
       - run:
           name: Fetch the Public IP of the Instance
           command: |
