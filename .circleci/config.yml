@@ -124,6 +124,13 @@ jobs:
       - run:
           name: View Environment Variables
           command: |
+
+            echo "export MY_ENV_VARIABLE=$AWS_ACCESS_KEY_ID" >> $BASH_ENV
+            echo "export ANOTHER_ENV_VARIABLE=$AWS_DEFAULT_REGION" >> $BASH_ENV
+            echo "export ANOTHER_ENV_VARIABLE=$AWS_SECRET_ACCESS_KEY" >> $BASH_ENV
+
+            source $BASH_ENV
+
             echo "MY_ENV_VARIABLE: $AWS_ACCESS_KEY_ID"
             echo "ANOTHER_ENV_VARIABLE: $AWS_DEFAULT_REGION"
             echo "ANOTHER_ENV_VARIABLE: $AWS_SECRET_ACCESS_KEY"
