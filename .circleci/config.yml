@@ -126,6 +126,22 @@ jobs:
           fingerprints: ["54:d5:ab:e5:bd:ed:a2:0c:df:b3:ab:0e:40:86:7d:f7"]
       - attach_workspace:
           at: ~/
+      -run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache \
+            python3 \
+            py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install \
+            awscli \
+            && rm -rf /var/cache/apk/*
+            apk add --update ansible    
+      -run:
+          name: Configure server
+          command: |
+              cd .circleci/ansible
+              ansible-playbook -i inventory.txt configure-server.yml
 
   
   deploy-infrastructure:
