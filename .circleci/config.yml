@@ -117,6 +117,11 @@ jobs:
   #           curl -X POST -H 'Content-type: application/json' --data '{"text":"Job failed! Please check the CI/CD pipeline."}' "${SLACK_WEBHOOK_URL}"
   #         # when: on_fail
 
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+      steps:
+        - checkout
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -147,27 +152,7 @@ jobs:
             echo $PublicIP > .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
   
-  # configure-infrastructure:
-  #   docker:
-  #     - image: python:3.7-alpine3.11
-  #   steps:
-  #     - checkout
-  #     - add_ssh_keys: 
-  #         fingerprints: ["d0:ae:9e:20:d9:5f:9d:ad:b9:e5:57:b9:54:9f:89:d5:a3:60:ae:74"]
-  #     - attach workspace:
-  #         at: ~/
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           sudo apt install -y software-properties-common
-  #           sudo apt-add-repository --yes --update ppa:ansible/ansible
-  #           sudo apt install -y ansible            
-  #     # - run:
-  #     #     name: Configure server
-  #     #     command: |
-  #     #       # Your code here
-  #     #       exit 1
-  #     # Here's where you will add some code to rollback on failure  
+  
 
 
 workflows:  
