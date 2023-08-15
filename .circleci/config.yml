@@ -107,7 +107,7 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
   
-  # Alert-Notification
+  # Alert-Notification for slack
   #   docker:
   #     - image: circleci/node:13.8.0
   #   steps:
@@ -179,8 +179,6 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt      
   
-  
-
 
 workflows:  
   build-workflow:
