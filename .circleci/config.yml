@@ -92,8 +92,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit --audit-level=critical
-            npm audit fix --audit-level=critical --force         
+            npm audit fix --audit-level=critical --force
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -106,8 +105,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit --audit-level=critical --force
-            npm audit fix --audit-level=critical
+            npm audit fix --audit-level=critical --force
   
   # Alert-Notification
   #   docker:
@@ -154,12 +152,16 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      # Add ssh keys with fingerprint
-      # attach workspace
+      - add_ssh_keys: 
+          fingerprints: ["d0:ae:9e:20:d9:5f:9d:ad:b9:e5:57:b9:54:9f:89:d5:a3:60:ae:74"]
+      - attach workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
-            # Your code here
+            sudo apt install -y software-properties-common
+            sudo apt-add-repository --yes --update ppa:ansible/ansible
+            sudo apt install -y ansible
             exit 1
       - run:
           name: Configure server
