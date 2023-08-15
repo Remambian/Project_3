@@ -117,24 +117,6 @@ jobs:
   #           curl -X POST -H 'Content-type: application/json' --data '{"text":"Job failed! Please check the CI/CD pipeline."}' "${SLACK_WEBHOOK_URL}"
   #         # when: on_fail
 
-  View-Env-Variable:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - run:
-          name: View Environment Variables
-          command: |
-
-            echo "export MY_ENV_VARIABLE=$AWS_ACCESS_KEY_ID" >> $BASH_ENV
-            echo "export ANOTHER_ENV_VARIABLE=$AWS_DEFAULT_REGION" >> $BASH_ENV
-            echo "export ANOTHER_ENV_VARIABLE=$AWS_SECRET_ACCESS_KEY" >> $BASH_ENV
-
-            source $BASH_ENV
-
-            echo "MY_ENV_VARIABLE: $AWS_ACCESS_KEY_ID"
-            echo "ANOTHER_ENV_VARIABLE: $AWS_DEFAULT_REGION"
-            echo "ANOTHER_ENV_VARIABLE: $AWS_SECRET_ACCESS_KEY"
-
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11
@@ -169,6 +151,11 @@ jobs:
             echo [web] > .circleci/ansible/inventory.txt
             echo $PublicIP > .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
+
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt      
   
   
 
@@ -186,8 +173,7 @@ workflows:
           requires : [build-frontend]
       - scan-backend:
           requires : [build-backend]      
-      # - deploy-infrastructure:
-      - View-Env-Variable:
+      - deploy-infrastructure:
           requires:
             - test-frontend
             - test-backend
