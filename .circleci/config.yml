@@ -117,6 +117,17 @@ jobs:
   #           curl -X POST -H 'Content-type: application/json' --data '{"text":"Job failed! Please check the CI/CD pipeline."}' "${SLACK_WEBHOOK_URL}"
   #         # when: on_fail
 
+  View-Env-Variable:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - run:
+          name: View Environment Variables
+          command: |
+            echo "MY_ENV_VARIABLE: $AWS_ACCESS_KEY_ID"
+            echo "ANOTHER_ENV_VARIABLE: $AWS_DEFAULT_REGION"
+            echo "ANOTHER_ENV_VARIABLE: $AWS_SECRET_ACCESS_KEY"
+
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11
@@ -168,7 +179,8 @@ workflows:
           requires : [build-frontend]
       - scan-backend:
           requires : [build-backend]      
-      - deploy-infrastructure:
+      # - deploy-infrastructure:
+      - View-Env-Variable:
           requires:
             - test-frontend
             - test-backend
