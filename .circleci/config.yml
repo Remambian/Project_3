@@ -126,8 +126,8 @@ jobs:
           fingerprints: ["54:d5:ab:e5:bd:ed:a2:0c:df:b3:ab:0e:40:86:7d:f7"]
       - attach_workspace:
           at: ~/
-          
-      -run:
+
+      - run:
           name: Install dependencies
           command: |
             apk add --no-cache \
@@ -138,7 +138,7 @@ jobs:
             awscli \
             && rm -rf /var/cache/apk/*
             apk add --update ansible    
-      -run:
+      - run:
           name: Configure server
           command: |
               cd .circleci/ansible
