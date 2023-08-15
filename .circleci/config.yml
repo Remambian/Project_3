@@ -120,8 +120,8 @@ jobs:
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11
-      steps:
-        - checkout
+    steps:
+      - checkout
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
