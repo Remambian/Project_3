@@ -143,7 +143,6 @@ jobs:
               cd .circleci/ansible
               ansible-playbook -i inventory.txt configure-server.yml
 
-  
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
