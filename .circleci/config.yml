@@ -172,7 +172,7 @@ jobs:
               --output text)
             echo [web] > .circleci/ansible/inventory.txt
             echo $PublicIP > .circleci/ansible/inventory.txt
-            cat .circleci/ansible/inventory.txt
+            echo cat .circleci/ansible/inventory.txt
 
       - persist_to_workspace:
           root: ~/
