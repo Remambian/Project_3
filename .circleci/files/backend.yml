@@ -30,7 +30,7 @@ Resources:
         - Ref: InstanceSecurityGroup
       KeyName: Challenge3Key 
       
-      ImageId: ami-068663a3c619dd892 
+      ImageId: ami-053b0d53c279acc90 
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
