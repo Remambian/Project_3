@@ -106,16 +106,7 @@ jobs:
             cd backend
             npm install
             npm audit fix --audit-level=critical --force
-  
-  # Alert-Notification
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - run: 
-  #         name: Notify Slack
-  #         command: |
-  #           curl -X POST -H 'Content-type: application/json' --data '{"text":"Job failed! Please check the CI/CD pipeline."}' "${SLACK_WEBHOOK_URL}"
-  #         # when: on_fail
+
 
   configure-infrastructure:
     docker:
