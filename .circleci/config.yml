@@ -146,13 +146,13 @@ jobs:
             if curl -s --head $PublicIP 
             then
               echo "It worked!"
-              retun 0
+              return 0
             else
               echo "It failed"
-              return 0
+              return 1
             fi
       - destroy-environment
-        when: on_fail
+    when: on_fail
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
