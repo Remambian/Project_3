@@ -144,6 +144,7 @@ jobs:
           name: Run a simple smoke test
           command: |
             echo $PublicIP 
+            echo "${CIRCLE_WORKFLOW_ID:0:7}"
 
             if curl -s --head $PublicIP 
             then
@@ -153,9 +154,7 @@ jobs:
               echo "It failed"
               return 1
             fi
-      - destroy-environment:
-          command:
-            echo "${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment:          
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
             
 
