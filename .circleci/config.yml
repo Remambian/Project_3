@@ -8,7 +8,7 @@ commands:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
       workflow_id:
-      type: string
+        type: string
     steps:
       - run:
           name: Destroy environments
@@ -151,8 +151,6 @@ jobs:
               echo "It failed"
               return 1
             fi
-      - destroy-environment
-    when: on_fail
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
@@ -229,4 +227,8 @@ workflows:
             - deploy-infrastructure
       - smoke-test:
           requires:
-            - configure-infrastructure      
+            - configure-infrastructure
+      - destroy-environment:
+          requires:
+            - smoke-test
+          when: on_fail  
