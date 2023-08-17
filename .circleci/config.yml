@@ -152,7 +152,7 @@ jobs:
               return 0
             fi
       - destroy-environment
-        when: on_fail      
+          when: on_fail      
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
