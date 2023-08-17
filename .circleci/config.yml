@@ -134,6 +134,23 @@ jobs:
               cd .circleci/ansible
               ansible-playbook -i inventory.txt configure-server.yml
 
+  run-migrations:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Run migrations
+          command: |
+            # Your code here
+            exit 1
+      - run:
+          name: Send migration results to memstash
+          command: |
+            # Your code here
+            exit 1
+     # Here's where you will add some code to rollback on failure 
+
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -142,7 +159,7 @@ jobs:
       - run:
           name: Ensure back-end infrastructure exists
           command: |
-            # isntall tar
+            # isntall tar for backend
             yum install -y tar gzip
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
