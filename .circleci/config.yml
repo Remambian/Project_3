@@ -137,7 +137,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: alpine:latest
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
@@ -202,11 +202,13 @@ jobs:
             PublicIP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
+            
             echo export  $PublicIP
             cat .circleci/ansible/inventory.txt
             echo "The public IP is $Public_IP"
             echo "[web]" > .circleci/ansible/inventory.txt
             echo $PublicIP > .circleci/ansible/inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt  
             cat .circleci/ansible/inventory.txt
 
       - persist_to_workspace:
