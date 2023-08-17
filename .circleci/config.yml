@@ -199,7 +199,13 @@ jobs:
             PublicIP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-            echo "export $Public_IP"  
+            if [ -f path/to/your/file.txt ]; then
+              echo "File exists"
+            else
+              echo "File does not exist"
+                
+            cat .circleci/ansible/inventory.txt
+            echo "The public IP is $Public_IP"
             echo "[web]" > .circleci/ansible/inventory.txt
             echo $PublicIP > .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
