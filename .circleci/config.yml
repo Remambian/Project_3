@@ -134,6 +134,20 @@ jobs:
               cd .circleci/ansible
               ansible-playbook -i inventory.txt configure-server.yml
 
+  smoke-test:
+    docker:
+      - image: alpine:latest
+    steps:
+      - checkout
+      - run:
+          name: Run a simple smoke test
+          command: |
+            if curl -s --head $PublicIP 
+            then
+              echo "It worked!"
+            else
+              echo "It failed"
+            fi
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
@@ -208,3 +222,6 @@ workflows:
       - configure-infrastructure:
           requires:
             - deploy-infrastructure
+      - smoke-test:
+          requires:
+            - configure-infrastructure      
