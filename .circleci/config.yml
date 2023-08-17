@@ -143,7 +143,7 @@ jobs:
       - run:
           name: Run a simple smoke test
           command: |
-            echo $PublicIP 
+            echo "$PublicIP"
             echo "${CIRCLE_WORKFLOW_ID:0:7}"
 
             if curl -s --head $PublicIP 
@@ -205,9 +205,9 @@ jobs:
             
             echo export  $PublicIP
             cat .circleci/ansible/inventory.txt
-            echo "The public IP is $Public_IP"
+            # echo "The public IP is $Public_IP"
             echo "[web]" > .circleci/ansible/inventory.txt
-            echo $PublicIP > .circleci/ansible/inventory.txt
+            # echo $PublicIP > .circleci/ansible/inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt  
             cat .circleci/ansible/inventory.txt
 
