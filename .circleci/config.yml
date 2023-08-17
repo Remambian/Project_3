@@ -202,11 +202,11 @@ jobs:
             PublicIP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-            sudo echo "export  PublicIP"
+            echo "export  PublicIP"
             cat .circleci/ansible/inventory.txt
             echo "The public IP is $Public_IP"
-            sudo echo "[web]" > .circleci/ansible/inventory.txt
-            sudo echo $PublicIP > .circleci/ansible/inventory.txt
+            echo "[web]" > .circleci/ansible/inventory.txt
+            echo $PublicIP > .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
 
       - persist_to_workspace:
