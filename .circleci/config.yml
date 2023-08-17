@@ -14,7 +14,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-              echo $workflow_id
+              echo <<parameters.workflow_id>>
               aws cloudformation delete-stack --stack-name Project3-backend-<<parameters.workflow_id>>
               aws cloudformation delete-stack --stack-name Project3-frontend-<<parameters.workflow_id>>
             
@@ -202,7 +202,7 @@ jobs:
             PublicIP=$(aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-            echo "export  PublicIP"
+            echo export  $PublicIP
             cat .circleci/ansible/inventory.txt
             echo "The public IP is $Public_IP"
             echo "[web]" > .circleci/ansible/inventory.txt
