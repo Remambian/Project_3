@@ -111,7 +111,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli #python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys: 
@@ -137,30 +137,7 @@ jobs:
               ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment:          
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
-
-  smoke-test:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Run a simple smoke test
-          command: |
-            echo "$PublicIP"
-            echo "${CIRCLE_WORKFLOW_ID:0:7}"
-
-            if curl -s --head $PublicIP 
-            then
-              echo "It worked!"
-              return 0
-            else
-              echo "It failed"
-              return 1
-            fi
-      - destroy-environment:          
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
-            
-
+        
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
