@@ -132,9 +132,6 @@ jobs:
       - run:
           name: Configure server
           command: |
-              source .circleci/Env_temp.txt
-              echo PublicIP
-              ping PublicIP
               cat .circleci/ansible/inventory.txt
               echo "Inventory Success"
               cd .circleci/ansible
@@ -188,22 +185,16 @@ jobs:
               --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
       - run:
           name: Fetch the Public IP of the Instance
-          command: |
-            PublicIP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text)
-            export PublicIP
+          command: |           
             echo "[web]" > .circleci/ansible/inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
             echo "Deploy Success"
-            echo "export PublicIP=\"$PublicIP\"" >> .circleci/Env_temp.txt
   
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt   
-            - project/.circleci/Env_temp.txt
 
 workflows:  
   build-workflow:
