@@ -126,16 +126,29 @@ jobs:
             py3-pip \
             && pip3 install --upgrade pip \
             && pip3 install \
-            awscli \
+            awscli  --upgrade\
             && rm -rf /var/cache/apk/*
             apk add --update ansible 
+            ansible --version
       - run:
           name: Configure server
           command: |
-              cat .circleci/ansible/inventory.txt
-              echo "Inventory Success"
-              cd .circleci/ansible
-              ansible-playbook -i inventory.txt configure-server.yml -vvv              
+            echo ENVIRONMENT=production >> backend/.env
+            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> backend/.env
+            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> backend/.env
+            echo TYPEORM_HOST=$TYPEORM_HOST >> backend/.env
+            echo TYPEORM_PORT=$TYPEORM_PORT >> backend/.env
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> backend/.env
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> backend/.env
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> backend/.env
+            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> backend/.env
+            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> backend/.env
+            cat backend/.env
+
+            cat .circleci/ansible/inventory.txt
+            echo "Inventory Success"
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml            
       - destroy-environment:          
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
         
