@@ -128,7 +128,8 @@ jobs:
             && pip3 install \
             awscli \
             && rm -rf /var/cache/apk/*
-            apk add --update ansible    
+            apk add --update ansible 
+            RUN pip install ansible paramiko cryptography   
       - run:
           name: Configure server
           command: |
