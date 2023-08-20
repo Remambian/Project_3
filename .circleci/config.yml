@@ -108,7 +108,40 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
 
-
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            # isntall tar for backend
+            yum install -y tar gzip
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --stack-name "Project3-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)  
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --stack-name "Project3-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
+      - run:
+          name: Fetch the Public IP of the Instance
+          command: |
+            cat .circleci/ansible/inventory.txt
+            echo "[web]" > .circleci/ansible/inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
+            echo "Deploy Success"
+  
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11
@@ -165,14 +198,15 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
+      - attach_workshapce:
+          at: ~/
       - run:
           name: Run migrations
           command: |
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
-            cat migrations_dump.txt
-
+            cat migrations_dump.txt      
       - run:
           name: Send migration results to memstash 
           command: |
@@ -183,40 +217,7 @@ jobs:
       - destroy-environment:
            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-  deploy-infrastructure:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Ensure back-end infrastructure exists
-          command: |
-            # isntall tar for backend
-            yum install -y tar gzip
-            aws cloudformation deploy \
-              --template-file .circleci/files/backend.yml \
-              --stack-name "Project3-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)  
-      - run:
-          name: Ensure front-end infrastructure exist
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/frontend.yml \
-              --stack-name "Project3-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID=$(echo ${CIRCLE_WORKFLOW_ID} | cut -c 1-7)
-      - run:
-          name: Fetch the Public IP of the Instance
-          command: |
-            cat .circleci/ansible/inventory.txt
-            echo "[web]" > .circleci/ansible/inventory.txt
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> .circleci/ansible/inventory.txt
-            cat .circleci/ansible/inventory.txt
-            echo "Deploy Success"
-  
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory.txt   
+
 
 workflows:  
   build-workflow:
