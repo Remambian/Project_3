@@ -198,7 +198,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - attach_workshapce:
+      - attach_workspace:
           at: ~/
       - run:
           name: Run migrations
