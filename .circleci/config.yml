@@ -14,6 +14,18 @@ commands:
               echo <<parameters.workflow_id>>
               aws cloudformation delete-stack --stack-name Project3-backend-<<parameters.workflow_id>>
               aws cloudformation delete-stack --stack-name Project3-frontend-<<parameters.workflow_id>>
+  undo_migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+            cd backend
+            if [[ -f ".circleci/outputs/db_migration_success" ]]; then
+              npm i
+              npm run migration:revert
+            fi    
             
 jobs:
   build-frontend:
