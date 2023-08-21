@@ -25,7 +25,7 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t4g.small
+      InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: NewProject3Key
