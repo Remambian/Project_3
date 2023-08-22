@@ -300,6 +300,12 @@ jobs:
             apk add curl
             /usr/local/bin/python -m pip install --upgrade pip            
       - run:
+          name: Install npm
+          command: |
+            apk add --update nodejs npm
+            node --version
+            npm --version
+      - run:
           name: Install ansible
           command: |
             apk add --update ansible
