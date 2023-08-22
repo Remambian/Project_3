@@ -259,7 +259,7 @@ workflows:
       - deploy-infrastructure:
           requires:
             # - test-frontend
-            # - test-backend
+            # - test-backend  
             - build-frontend
             - build-backend
       - configure-infrastructure:
