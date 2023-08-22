@@ -226,7 +226,7 @@ jobs:
           command: |
             cd backend
             npm install
-
+            npm run build
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
@@ -255,21 +255,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk update
-            apk upgrade
-            apk add unzip 
-            apk add curl
-            /usr/local/bin/python -m pip install --upgrade pip
-      - run:
-          name: Install ansible
-          command: |
-            apk add --update ansible
-            ansible --version
-      - run:
-          name: Install aws
-          command: |
-            pip install awscli --upgrade   
-            aws --version   
+            apk add --update ansible tar gzip npm nodejs curl 
+            pip install awscli  
       - restore_cache:
           keys: [frontend-build]
       - attach_workspace:
