@@ -1,7 +1,8 @@
 ---
 - name: "configuration deploy backend."
   hosts: web
-  remote_user: ubuntu
+  user: ubuntu
+  become: true
   become_method: sudo
   become_user: root
   gather_facts: false
