@@ -30,7 +30,7 @@ Resources:
         - Ref: InstanceSecurityGroup
       KeyName: UdacityFinal
       
-      ImageId: ami-053b0d53c279acc90
+      ImageId: ami-0261755bbcb8c4a84
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
