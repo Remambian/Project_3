@@ -23,8 +23,8 @@
 - name: Copy backend dist files web server
   become: yes
   copy:
-    src: ~/project/artifact.tar.gz
-    dest: ~/backend/artifact.tar.gz
+    src: artifact.tar.gz
+    dest: /home/ubuntu
 
 - name: Uncompress Backend
   become: yes
