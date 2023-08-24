@@ -24,7 +24,7 @@
     production: yes
     state: present
 
-- name: "Copy artifact to home"
+- name: "Copy artifacts to home"
   become: true
   copy:
     # src: artifact.tar.gz
