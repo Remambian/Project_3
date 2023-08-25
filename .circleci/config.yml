@@ -364,8 +364,10 @@ jobs:
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
+              echo "Success"
               return 0
             else
+              echo "Fail"
               return 1
             fi
       - run:
@@ -380,7 +382,7 @@ jobs:
             else
               return 1
             fi
-      # Here's where you will add some code to rollback on failure 
+      
 
   cloudfront-update:
     docker:
@@ -481,7 +483,7 @@ workflows:
       - deploy-backend:
           requires:
             - deploy-frontend
-      # - smoke-test
-      #     required:
-      #       - deploy-frontend
-      #       - deploy-backend
+      - smoke-test
+          required:
+            - deploy-frontend
+            - deploy-backend
