@@ -23,6 +23,10 @@
     global: yes
     production: yes
     state: present
+- name: Creates directory
+  file:
+    path: /home/ubuntu/backend
+    state: directory
 
 - name: "Copy artifacts to home"
   become: true
@@ -31,12 +35,6 @@
     # dest: /home/ubuntu
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu/backend/artifact.tar.gz
-
-
-- name: Creates directory
-  file:
-    path: /home/ubuntu/backend
-    state: directory
 
 - name: Extract 'artifact.tar.gz' into '/home/ubuntu/backend'
   unarchive:
