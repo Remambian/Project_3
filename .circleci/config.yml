@@ -483,7 +483,7 @@ workflows:
       - deploy-backend:
           requires:
             - deploy-frontend
-      - smoke-test
-          required:
+      - smoke-test:
+          requires:
             - deploy-frontend
             - deploy-backend
