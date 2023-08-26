@@ -365,7 +365,7 @@ jobs:
             if curl "${API_URL}/api/status" | grep "ok"
             then
               echo "Success"
-              return 0
+              return 1
             else
               echo "Fail"
               return 1
@@ -378,11 +378,14 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
               # Change this to 0 after the job fails
-              return 0
+              return 1
             else
               return 1
             fi
-      
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   cloudfront-update:
     docker:
