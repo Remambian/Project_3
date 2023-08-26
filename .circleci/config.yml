@@ -14,7 +14,7 @@ commands:
               echo <<parameters.workflow_id>>
               aws cloudformation delete-stack --stack-name Project3-backend-<<parameters.workflow_id>>
               aws cloudformation delete-stack --stack-name Project3-frontend-<<parameters.workflow_id>>
-  undo_migrations:
+  revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     steps:
       - run:
@@ -151,6 +151,10 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+      
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11
@@ -196,7 +200,8 @@ jobs:
             cat .circleci/ansible/inventory.txt
             echo "Inventory Success"
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml            
+            ansible-playbook -i inventory.txt configure-server.yml  
+
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
         
@@ -279,8 +284,9 @@ jobs:
 
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}    
 
-      # Here's where you will add some code to rollback on failure
 
   deploy-backend:
     docker:
@@ -333,6 +339,10 @@ jobs:
 
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}    
+
   smoke-test:
     docker:
       - image: python:3.7-alpine3.11
@@ -426,6 +436,8 @@ jobs:
             echo "New Wokflow ID: ${CIRCLE_WORKFLOW_ID}"
       
       - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   cleanup:
